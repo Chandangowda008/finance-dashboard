@@ -1,0 +1,120 @@
+.section {
+  display: grid;
+  gap: 1.1rem;
+}
+
+.noDataNotice {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  background: var(--surface-soft);
+  color: var(--muted-text);
+  padding: 0.75rem 0.9rem;
+  font-size: 0.9rem;
+}
+
+.cardGrid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.summaryCard {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 1rem;
+  box-shadow: var(--shadow-soft);
+  animation: reveal 0.4s ease both;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.summaryCard:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.summaryCard:nth-child(3) {
+  animation-delay: 0.1s;
+}
+
+.summaryCard:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+}
+
+.summaryCard p {
+  margin: 0;
+  color: var(--muted-text);
+  font-size: 0.9rem;
+}
+
+.summaryCard h3 {
+  margin: 0.3rem 0 0;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.chartGrid {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.chartCard {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 1rem;
+  box-shadow: var(--shadow-soft);
+  animation: reveal 0.45s ease both;
+  transition: transform 0.2s ease;
+}
+
+.chartCard:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.chartCard:hover {
+  transform: translateY(-2px);
+}
+
+.chartCard header {
+  margin-bottom: 0.5rem;
+}
+
+.chartCard h4 {
+  margin: 0;
+}
+
+.chartCard p {
+  margin: 0.25rem 0 0;
+  color: var(--muted-text);
+}
+
+.empty {
+  display: grid;
+  place-items: center;
+  min-height: 180px;
+  color: var(--muted-text);
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 700px) {
+  .chartGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .summaryCard h3 {
+    font-size: 1.35rem;
+  }
+}

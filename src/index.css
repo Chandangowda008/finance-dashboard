@@ -1,0 +1,49 @@
+:root {
+  --text: #132037;
+  --muted-text: #4a5976;
+  --bg: #f4f8ff;
+  --bg-orb-1: #c8e2ff;
+  --bg-orb-2: #d6f9ec;
+  --surface: rgba(255, 255, 255, 0.82);
+  --surface-soft: rgba(244, 249, 255, 0.78);
+  --border: rgba(89, 113, 156, 0.24);
+  --accent: #0c62d9;
+  --chart-grid: rgba(89, 113, 156, 0.18);
+  --shadow-soft: 0 10px 30px rgba(22, 45, 85, 0.08);
+}
+
+:root[data-theme='dark'] {
+  --text: #d9e6ff;
+  --muted-text: #9fb2d4;
+  --bg: #111927;
+  --bg-orb-1: #1f3a69;
+  --bg-orb-2: #183a34;
+  --surface: rgba(19, 29, 45, 0.82);
+  --surface-soft: rgba(18, 33, 58, 0.76);
+  --border: rgba(166, 192, 238, 0.24);
+  --accent: #4f9bff;
+  --chart-grid: rgba(166, 192, 238, 0.2);
+  --shadow-soft: 0 12px 34px rgba(0, 0, 0, 0.33);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background: var(--bg);
+  font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
