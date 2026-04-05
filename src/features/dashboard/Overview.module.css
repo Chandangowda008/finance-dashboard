@@ -90,6 +90,70 @@
   color: var(--muted-text);
 }
 
+.pieWrap {
+  position: relative;
+}
+
+.pieCenter {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.pieCenter span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-text);
+}
+
+.pieCenter strong {
+  font-size: 1.15rem;
+  line-height: 1.1;
+}
+
+.pieLegend {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.45rem;
+}
+
+.pieLegend li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.35rem 0.5rem;
+  background: var(--surface-soft);
+}
+
+.legendSwatch {
+  width: 0.62rem;
+  height: 0.62rem;
+  border-radius: 999px;
+}
+
+.legendName {
+  font-size: 0.82rem;
+  color: var(--muted-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.legendValue {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
 .empty {
   display: grid;
   place-items: center;
@@ -116,5 +180,9 @@
 
   .summaryCard h3 {
     font-size: 1.35rem;
+  }
+
+  .pieLegend {
+    grid-template-columns: 1fr;
   }
 }

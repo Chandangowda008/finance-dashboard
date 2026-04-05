@@ -14,6 +14,7 @@ export const TransactionsPanel = () => {
     setFilter,
     addTransaction,
     updateTransaction,
+    deleteTransaction,
   } = useAppState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | undefined>(undefined);
@@ -145,17 +146,17 @@ export const TransactionsPanel = () => {
             <tbody>
               {filteredTransactions.map((transaction) => (
                 <tr key={transaction.id}>
-                  <td>{formatDate(transaction.date)}</td>
-                  <td>{transaction.description}</td>
-                  <td>{transaction.category}</td>
-                  <td>
+                  <td data-label="Date">{formatDate(transaction.date)}</td>
+                  <td data-label="Description">{transaction.description}</td>
+                  <td data-label="Category">{transaction.category}</td>
+                  <td data-label="Type">
                     <span className={transaction.type === 'income' ? styles.income : styles.expense}>
                       {transaction.type}
                     </span>
                   </td>
-                  <td>{formatCurrency(transaction.amount)}</td>
+                  <td data-label="Amount">{formatCurrency(transaction.amount)}</td>
                   {canMutate ? (
-                    <td>
+                    <td data-label="Action">
                       <button
                         type="button"
                         className={styles.editButton}
@@ -178,6 +179,7 @@ export const TransactionsPanel = () => {
         onClose={closeModal}
         transaction={editingTransaction}
         onSubmit={editingTransaction ? updateTransaction : addTransaction}
+        onDelete={editingTransaction ? deleteTransaction : undefined}
       />
     </section>
   );

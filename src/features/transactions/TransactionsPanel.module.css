@@ -104,6 +104,7 @@
 
 .tableWrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .table {
@@ -194,5 +195,83 @@
 @media (max-width: 620px) {
   .filters {
     grid-template-columns: 1fr;
+  }
+
+  .actions {
+    width: 100%;
+  }
+
+  .actions button,
+  .roleBadge {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .section {
+    padding: 0.85rem;
+  }
+
+  .header {
+    gap: 0.7rem;
+  }
+
+  .header p {
+    font-size: 0.88rem;
+  }
+
+  .table {
+    min-width: 0;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .table tr {
+    display: grid;
+    gap: 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-soft);
+    padding: 0.6rem;
+  }
+
+  .table td {
+    border: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.9rem;
+    min-height: 1.55rem;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    color: var(--muted-text);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .table td[data-label='Description'] {
+    align-items: start;
+  }
+
+  .table td[data-label='Description']::before {
+    margin-top: 0.08rem;
+  }
+
+  .table td[data-label='Action'] button {
+    width: fit-content;
   }
 }

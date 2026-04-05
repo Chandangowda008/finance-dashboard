@@ -4,6 +4,7 @@ import {
   CartesianGrid,
   Cell,
   Pie,
+  type PieLabelRenderProps,
   PieChart,
   ResponsiveContainer,
   Tooltip,
@@ -17,6 +18,39 @@ import styles from './Overview.module.css';
 
 const PIE_COLORS = ['#0958d9', '#0f766e', '#b45309', '#be123c', '#7c3aed', '#4f46e5'];
 
+const RADIAN = Math.PI / 180;
+
+const renderPieLabel = ({
+  cx,
+  cy,
+  midAngle,
+  innerRadius,
+  outerRadius,
+  percent,
+}: PieLabelRenderProps) => {
+  if (
+    cx == null ||
+    cy == null ||
+    midAngle == null ||
+    innerRadius == null ||
+    outerRadius == null ||
+    percent == null ||
+    percent < 0.08
+  ) {
+    return null;
+  }
+
+  const radius = Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) * 0.52;
+  const x = Number(cx) + radius * Math.cos(-midAngle * RADIAN);
+  const y = Number(cy) + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text x={x} y={y} fill="white" textAnchor="middle" dominantBaseline="central" fontSize={12}>
+      {`${Math.round(percent * 100)}%`}
+    </text>
+  );
+};
+
 export const Overview = () => {
   const { state, filteredTransactions } = useAppState();
 
@@ -25,6 +59,18 @@ export const Overview = () => {
   const categoryData = useMemo(
     () => getCategoryBreakdown(filteredTransactions),
     [filteredTransactions],
+  );
+  const expenseTotal = useMemo(
+    () => categoryData.reduce((sum, item) => sum + item.value, 0),
+    [categoryData],
+  );
+  const pieData = useMemo(
+    () =>
+      categoryData.map((item) => ({
+        ...item,
+        share: expenseTotal > 0 ? item.value / expenseTotal : 0,
+      })),
+    [categoryData, expenseTotal],
   );
 
   return (
@@ -95,29 +141,56 @@ export const Overview = () => {
             <p>Category-based view</p>
           </header>
           {categoryData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Tooltip
-                  contentStyle={{
-                    borderRadius: 10,
-                    border: '1px solid var(--border)',
-                    background: 'var(--surface)',
-                  }}
-                />
-                <Pie
-                  data={categoryData}
-                  dataKey="value"
-                  nameKey="category"
-                  innerRadius={64}
-                  outerRadius={96}
-                  paddingAngle={3}
-                >
-                  {categoryData.map((_, index) => (
-                    <Cell key={`slice-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+            <>
+              <div className={styles.pieWrap}>
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Tooltip
+                      contentStyle={{
+                        borderRadius: 10,
+                        border: '1px solid var(--border)',
+                        background: 'var(--surface)',
+                      }}
+                      formatter={(value) => formatCurrency(Number(value))}
+                    />
+                    <Pie
+                      data={pieData}
+                      dataKey="value"
+                      nameKey="category"
+                      innerRadius={70}
+                      outerRadius={102}
+                      paddingAngle={4}
+                      cornerRadius={8}
+                      stroke="var(--surface)"
+                      strokeWidth={3}
+                      labelLine={false}
+                      label={renderPieLabel}
+                    >
+                      {pieData.map((_, index) => (
+                        <Cell key={`slice-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className={styles.pieCenter}>
+                  <span>Total Spend</span>
+                  <strong>{formatCurrency(expenseTotal)}</strong>
+                </div>
+              </div>
+
+              <ul className={styles.pieLegend}>
+                {pieData.map((item, index) => (
+                  <li key={item.category}>
+                    <span
+                      className={styles.legendSwatch}
+                      style={{ backgroundColor: PIE_COLORS[index % PIE_COLORS.length] }}
+                    />
+                    <span className={styles.legendName}>{item.category}</span>
+                    <span className={styles.legendValue}>{Math.round(item.share * 100)}%</span>
+                  </li>
+                ))}
+              </ul>
+            </>
           ) : (
             <p className={styles.empty}>No expense categories available.</p>
           )}

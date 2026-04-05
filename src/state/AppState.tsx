@@ -22,7 +22,8 @@ type AppAction =
   | { type: 'SET_THEME'; payload: ThemeMode }
   | { type: 'SET_FILTER'; payload: Partial<FinanceState['filters']> }
   | { type: 'ADD_TRANSACTION'; payload: Transaction }
-  | { type: 'UPDATE_TRANSACTION'; payload: Transaction };
+  | { type: 'UPDATE_TRANSACTION'; payload: Transaction }
+  | { type: 'DELETE_TRANSACTION'; payload: string };
 
 const getInitialTheme = (): ThemeMode => {
   if (typeof window === 'undefined') {
@@ -146,6 +147,13 @@ const reducer = (state: FinanceState, action: AppAction): FinanceState => {
     };
   }
 
+  if (action.type === 'DELETE_TRANSACTION') {
+    return {
+      ...state,
+      transactions: state.transactions.filter((transaction) => transaction.id !== action.payload),
+    };
+  }
+
   return state;
 };
 
@@ -171,7 +179,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
 
     const persisted = readPersistedTransactions();
 
-    if (persisted) {
+    if (persisted && persisted.length > 0) {
       hasLoadedTransactions.current = true;
       dispatch({ type: 'LOAD_SUCCESS', payload: persisted });
       return;
@@ -196,6 +204,12 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
     const updated = await financeApi.updateTransaction(transaction);
     hasLoadedTransactions.current = true;
     dispatch({ type: 'UPDATE_TRANSACTION', payload: updated });
+  }, []);
+
+  const deleteTransaction = useCallback(async (transactionId: string) => {
+    await financeApi.deleteTransaction(transactionId);
+    hasLoadedTransactions.current = true;
+    dispatch({ type: 'DELETE_TRANSACTION', payload: transactionId });
   }, []);
 
   const setRole = useCallback((role: UserRole) => {
@@ -228,6 +242,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
       setFilter,
       addTransaction,
       updateTransaction,
+      deleteTransaction,
     }),
     [
       state,
@@ -239,6 +254,7 @@ export const AppStateProvider = ({ children }: { children: ReactNode }) => {
       setFilter,
       addTransaction,
       updateTransaction,
+      deleteTransaction,
     ],
   );
 

@@ -153,28 +153,29 @@
   transform: translateX(0);
 }
 
-.switchMoon {
+.switchIcon {
   width: 0.82rem;
   height: 0.82rem;
-  border-radius: 999px;
-  background: #1c2432;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
-  opacity: 0;
+  display: block;
+  position: absolute;
+  object-fit: contain;
   transition: opacity 0.2s ease;
+}
+
+.switchSun {
+  opacity: 1;
+}
+
+.switchMoon {
+  opacity: 0;
+}
+
+.isDark .switchSun {
+  opacity: 0;
 }
 
 .isDark .switchMoon {
   opacity: 1;
-}
-
-.switchMoon::after {
-  content: '';
-  position: absolute;
-  width: 0.66rem;
-  height: 0.66rem;
-  border-radius: 999px;
-  background: #f7f9fc;
-  transform: translate(0.27rem, -0.02rem);
 }
 
 .status {
@@ -228,6 +229,7 @@
 @media (max-width: 620px) {
   .container {
     width: min(1140px, calc(100% - 1rem));
+    padding: 1rem 0 1.4rem;
   }
 
   .controls {
@@ -238,5 +240,48 @@
   .roleControl,
   .themeControl {
     justify-content: space-between;
+  }
+
+  .brand h1 {
+    font-size: 1.24rem;
+  }
+
+  .brand p {
+    font-size: 0.84rem;
+  }
+
+  .roleSwitch {
+    height: 2.18rem;
+  }
+
+  .roleOption {
+    min-width: 4.2rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .topBar {
+    padding: 0.7rem 0.75rem;
+  }
+
+  .themeText {
+    font-size: 0.78rem;
+  }
+
+  .themeSwitch {
+    width: 4.15rem;
+    height: 1.95rem;
+  }
+
+  .switchThumb {
+    width: 1.5rem;
+    height: 1.5rem;
+    top: 0.16rem;
+    left: 0.18rem;
+    transform: translateX(1.8rem);
+  }
+
+  .isDark .switchThumb {
+    transform: translateX(0);
   }
 }

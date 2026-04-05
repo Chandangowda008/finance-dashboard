@@ -1,6 +1,8 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { useAppState } from './state/useAppState';
 import styles from './App.module.css';
+import halfMoonIcon from './assets/half-moon.svg';
+import sunIcon from './assets/sun.svg';
 
 const Overview = lazy(() =>
   import('./features/dashboard/Overview').then((module) => ({ default: module.Overview })),
@@ -72,7 +74,8 @@ function App() {
                 aria-label="Toggle theme"
               >
                 <span className={styles.switchThumb}>
-                  <span className={styles.switchMoon} />
+                  <img src={sunIcon} className={`${styles.switchIcon} ${styles.switchSun}`} alt="" aria-hidden="true" />
+                  <img src={halfMoonIcon} className={`${styles.switchIcon} ${styles.switchMoon}`} alt="" aria-hidden="true" />
                 </span>
               </button>
               <span className={`${styles.themeText} ${state.theme === 'light' ? styles.activeText : ''}`}>

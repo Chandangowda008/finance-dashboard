@@ -11,6 +11,7 @@ export interface AppContextValue {
   setFilter: (patch: Partial<FinanceState['filters']>) => void;
   addTransaction: (transaction: Transaction) => Promise<void>;
   updateTransaction: (transaction: Transaction) => Promise<void>;
+  deleteTransaction: (transactionId: string) => Promise<void>;
 }
 
 export const AppContext = createContext<AppContextValue | null>(null);

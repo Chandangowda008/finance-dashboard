@@ -6,6 +6,7 @@ interface TransactionModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (transaction: Transaction) => Promise<void>;
+  onDelete?: (transactionId: string) => Promise<void>;
   transaction?: Transaction;
 }
 
@@ -43,10 +44,12 @@ export const TransactionModal = ({
   open,
   onClose,
   onSubmit,
+  onDelete,
   transaction,
 }: TransactionModalProps) => {
   const [form, setForm] = useState<FormState>(() => buildInitialFormState(transaction));
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   if (!open) {
     return null;
@@ -65,7 +68,7 @@ export const TransactionModal = ({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!isValid || submitting) {
+    if (!isValid || submitting || deleting) {
       return;
     }
 
@@ -81,6 +84,22 @@ export const TransactionModal = ({
 
     await onSubmit(payload);
     setSubmitting(false);
+    onClose();
+  };
+
+  const handleDelete = async () => {
+    if (!transaction || !onDelete || submitting || deleting) {
+      return;
+    }
+
+    const shouldDelete = window.confirm('Delete this transaction permanently?');
+    if (!shouldDelete) {
+      return;
+    }
+
+    setDeleting(true);
+    await onDelete(transaction.id);
+    setDeleting(false);
     onClose();
   };
 
@@ -149,10 +168,20 @@ export const TransactionModal = ({
         </label>
 
         <footer className={styles.actions}>
+          {transaction ? (
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={handleDelete}
+              disabled={submitting || deleting}
+            >
+              {deleting ? 'Deleting...' : 'Delete'}
+            </button>
+          ) : null}
           <button type="button" onClick={onClose}>
             Cancel
           </button>
-          <button type="submit" disabled={!isValid || submitting}>
+          <button type="submit" disabled={!isValid || submitting || deleting}>
             {submitting ? 'Saving...' : 'Save'}
           </button>
         </footer>

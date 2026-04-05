@@ -29,4 +29,9 @@ export const financeApi = {
     );
     return transaction;
   },
+
+  async deleteTransaction(transactionId: string): Promise<void> {
+    await wait(300);
+    storedTransactions = storedTransactions.filter((item) => item.id !== transactionId);
+  },
 };
